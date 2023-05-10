@@ -13,6 +13,16 @@ class TeamsController {
       console.log(err);
     }
   }
+
+  public async findTeamsById(req: Request, res: Response): Promise<Response | void> {
+    try {
+      const { id } = req.params;
+      const result = await this.teamsService.findTeamsById(Number(id));
+      res.status(200).json(result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 export default TeamsController;
