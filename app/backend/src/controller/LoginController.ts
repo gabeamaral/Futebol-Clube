@@ -18,13 +18,18 @@ class LoginController {
   };
 
   roleLogin = async (req: Request, res: Response): Promise<void> => {
-    const { email } = res.locals.token;
-    const resLogin = await this.service.roleLogin(email);
-    if (!resLogin) {
-      res.status(401).json({ message: 'Invalid email or password' });
-      return;
+    try {
+      const { email } = res.locals.token;
+      const resLogin = await this.service.roleLogin(email);
+      if (!resLogin) {
+        res.status(401).json({ message: 'Invalid email or password' });
+        return;
+      }
+      res.status(200).json({ role: resLogin });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-    res.status(200).json({ role: resLogin });
   };
 }
 
