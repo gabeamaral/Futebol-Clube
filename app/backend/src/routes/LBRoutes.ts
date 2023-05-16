@@ -4,6 +4,9 @@ import LBControler from '../controller/LBController';
 const RouterLBoard = Router();
 
 RouterLBoard.get('/home', (req: Request, res: Response) =>
-  LBControler.getLeaderBoard(req, res));
+  LBControler.getLBHome(req, res));
+
+RouterLBoard.get('/away', (req: Request, res: Response) =>
+  LBControler.getLBAway(req, res));
 
 export default RouterLBoard;
