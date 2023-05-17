@@ -1,4 +1,5 @@
 import { IMatch } from '../interface/IMatch';
+import IBoard from '../interface/IBoard';
 
 const teamStats = {
   name: '',
@@ -9,6 +10,8 @@ const teamStats = {
   totalLosses: 0,
   goalsFavor: 0,
   goalsOwn: 0,
+  goalsBalance: 0,
+  efficiency: 0,
 };
 
 const resetStats = () => {
@@ -19,6 +22,8 @@ const resetStats = () => {
   teamStats.totalLosses = 0;
   teamStats.goalsFavor = 0;
   teamStats.goalsOwn = 0;
+  teamStats.goalsBalance = 0;
+  teamStats.efficiency = 0;
 };
 
 const homeVictory = (homeTeamGoals: number, awayTeamGoals: number) => {
@@ -86,6 +91,10 @@ const getStatsHome = (name: string, matches: IMatch[]) => {
   teamStats.name = name;
   addScoreHome(matches);
   teamStats.totalGames += 1;
+  teamStats.goalsBalance = teamStats.goalsFavor - teamStats.goalsOwn;
+  teamStats.efficiency = Number(
+    ((teamStats.totalPoints / (teamStats.totalGames * 3)) * 100).toFixed(2),
+  );
   return teamStats;
 };
 
@@ -99,4 +108,12 @@ const getStatsAway = (name: string, matches: IMatch[]) => {
   return teamStats;
 };
 
-export { getStatsHome, getStatsAway };
+const classifyTeams = (matches: IBoard[]) => matches.sort((home, away) => (
+  away.totalPoints - home.totalPoints
+  || away.totalVictories - home.totalVictories
+  || away.goalsBalance - home.goalsBalance
+  || away.goalsFavor - home.goalsFavor
+  || away.goalsOwn - home.goalsFavor
+));
+
+export { getStatsHome, getStatsAway, classifyTeams };
